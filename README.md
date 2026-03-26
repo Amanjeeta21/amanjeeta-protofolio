@@ -1,2 +1,2 @@
 # Amanjeeta Rath — Portfolio
-🔗 Live site: https://github.com/Amanjeeta21/amanjeeta-protofolio
+🔗 Live site: https://amanjeeta21.github.io/amanjeeta-protofolio/
