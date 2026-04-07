@@ -1,1280 +1,843 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>SyncStream — Watch Together</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Amanjeeta Rath — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0c0a14;--bg2:#13101e;--bg3:#1a1628;--card:#201c2e;--lift:#2a2540;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
-  --rose:#e07090;--rose2:rgba(224,112,144,0.15);--rose3:rgba(224,112,144,0.08);
-  --plum:#9b7dd4;--gold:#c9a44a;
-  --t1:#f0eaf8;--t2:#9488b0;--t3:#5a5270;--t4:#322d48;
-  --fs:'DM Sans',sans-serif;--fd:'Instrument Serif',serif;
-  --r:8px;--rl:14px;--rxl:20px;
-  --nav-h:60px;
-}
-.light{
-  --bg:#f5f2fb;--bg2:#eeeaf8;--bg3:#fff;--card:#fff;--lift:#ede8f8;
-  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);
-  --rose:#c0446a;--rose2:rgba(180,50,90,0.08);--rose3:rgba(180,50,90,0.05);
-  --plum:#7040b8;--gold:#8a6010;
-  --t1:#18122e;--t2:#5a4878;--t3:#9a8ab0;--t4:#d0c8e8;
-}
-html,body{width:100%;min-height:100vh;background:var(--bg);color:var(--t1);font-family:var(--fs);font-size:15px;overflow-x:hidden}
-button,input,select,textarea{font-family:var(--fs)}
+  :root {
+    --bg: #080c10;
+    --bg2: #0d1117;
+    --bg3: #111820;
+    --accent: #00f5c4;
+    --accent2: #0af;
+    --accent3: #7b5fff;
+    --text: #e0eaf5;
+    --muted: #5a7a96;
+    --border: #1a2a3a;
+    --card: #0e1620;
+    --glow: 0 0 24px #00f5c440;
+    --glow2: 0 0 40px #00affe30;
+  }
 
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── PAGES ── */
-.page{display:none;min-height:100vh;flex-direction:column}
-.page.active{display:flex}
+  html { scroll-behavior: smooth; }
 
-/* ── TOP NAV ── */
-.topnav{
-  position:fixed;top:0;left:0;right:0;z-index:300;
-  height:var(--nav-h);display:flex;align-items:center;
-  padding:0 20px;gap:12px;
-  background:rgba(12,10,20,0.9);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--border);
-}
-.light .topnav{background:rgba(245,242,251,0.9)}
-.nav-logo{font-family:var(--fd);font-size:21px;color:var(--t1);cursor:pointer;white-space:nowrap;margin-right:4px}
-.nav-logo em{color:var(--rose);font-style:normal}
-.nav-tabs{display:flex;align-items:center;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none}
-.nav-tabs::-webkit-scrollbar{display:none}
-.nav-tab{
-  padding:7px 14px;border-radius:var(--r);font-size:13px;font-weight:500;
-  color:var(--t2);cursor:pointer;background:none;border:none;white-space:nowrap;
-  transition:all .2s;
-}
-.nav-tab:hover{color:var(--t1);background:var(--lift)}
-.nav-tab.active{color:var(--t1);background:var(--lift)}
-.nav-tab.cta{background:var(--rose);color:#fff;border:none}
-.nav-tab.cta:hover{opacity:.88}
-.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.icon-btn{
-  width:34px;height:34px;border-radius:var(--r);background:var(--lift);
-  border:1px solid var(--border);color:var(--t2);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;font-size:15px;
-  transition:all .2s;flex-shrink:0;
-}
-.icon-btn:hover{border-color:var(--rose);color:var(--rose)}
-.icon-btn.on{border-color:var(--rose);color:var(--rose);background:var(--rose2)}
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
 
-/* ── PAGE SHELLS ── */
-.page-body{padding-top:var(--nav-h);flex:1;display:flex;flex-direction:column}
+  /* Custom cursor */
+  #cursor {
+    position: fixed; width: 14px; height: 14px;
+    background: var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s, background 0.2s;
+    mix-blend-mode: screen;
+  }
+  #cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1.5px solid var(--accent2); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform 0.18s ease, width 0.2s, height 0.2s;
+    opacity: 0.5;
+  }
 
-/* ── LANDING ── */
-.hero{
-  text-align:center;padding:80px 20px 60px;
-  display:flex;flex-direction:column;align-items:center;
-}
-.hero-pill{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:5px 13px;border-radius:20px;
-  background:var(--rose2);border:1px solid rgba(224,112,144,.25);
-  font-size:11px;font-weight:500;color:var(--rose);
-  letter-spacing:1.2px;text-transform:uppercase;margin-bottom:24px;
-}
-.pulse{width:6px;height:6px;border-radius:50%;background:var(--rose);animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.hero h1{font-family:var(--fd);font-size:clamp(36px,5.5vw,68px);line-height:1.1;color:var(--t1);max-width:800px;margin-bottom:18px;animation:fadeUp .6s ease both}
-.hero h1 em{font-style:italic;color:var(--rose)}
-.hero p{font-size:16px;line-height:1.7;color:var(--t2);max-width:500px;margin-bottom:36px;font-weight:300;animation:fadeUp .6s .1s ease both}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp .6s .2s ease both}
-.btn{padding:12px 28px;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;transition:all .25s;border:1px solid transparent}
-.btn-solid{background:var(--rose);color:#fff;border-color:rgba(255,255,255,.1)}
-.btn-solid:hover{opacity:.88;transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:var(--t1);border-color:var(--border2)}
-.btn-ghost:hover{border-color:var(--plum);color:var(--plum);background:rgba(155,125,212,.1)}
-.hero-stats{display:flex;gap:36px;margin-top:52px;flex-wrap:wrap;justify-content:center;animation:fadeUp .6s .3s ease both}
-.stat .num{font-family:var(--fd);font-size:30px;color:var(--t1)}
-.stat .num em{color:var(--rose);font-style:normal}
-.stat .lbl{font-size:11px;color:var(--t3);margin-top:2px}
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.35;
+  }
 
-/* ── FEATURES ── */
-.features{padding:0 20px 70px;max-width:1060px;margin:0 auto;width:100%}
-.sec-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--rose);font-weight:500;text-align:center;margin-bottom:10px}
-.sec-h{font-family:var(--fd);font-size:clamp(24px,3vw,38px);font-weight:400;color:var(--t1);text-align:center;margin-bottom:44px;line-height:1.3}
-.sec-h em{font-style:italic;color:var(--rose)}
-.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px}
-.feat-card{
-  padding:24px 20px;border-radius:var(--rl);background:var(--card);
-  border:1px solid var(--border);transition:all .25s;
-}
-.feat-card:hover{border-color:var(--border2);transform:translateY(-2px)}
-.feat-icon{font-size:22px;margin-bottom:12px}
-.feat-card h3{font-family:var(--fd);font-size:16px;font-weight:400;color:var(--t1);margin-bottom:6px}
-.feat-card p{font-size:13px;color:var(--t2);line-height:1.6;font-weight:300}
+  /* Grid bg */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none; z-index: 0; opacity: 0.35;
+  }
 
-/* ── LIVE ROOMS LIST ── */
-.rooms-section{padding:0 20px 70px;max-width:1060px;margin:0 auto;width:100%}
-.rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:12px}
-.room-card{
-  padding:16px;border-radius:var(--rl);background:var(--card);
-  border:1px solid var(--border);cursor:pointer;transition:all .25s;
-}
-.room-card:hover{border-color:var(--rose);box-shadow:0 4px 20px var(--rose3)}
-.rc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.rc-name{font-family:var(--fd);font-size:15px;color:var(--t1)}
-.rc-live{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--rose)}
-.rc-live .dot{width:5px;height:5px;border-radius:50%;background:var(--rose);animation:pulse 1.4s infinite}
-.rc-film{font-size:12px;color:var(--t2);margin-bottom:10px}
-.rc-avatars{display:flex;gap:0}
-.ava{
-  width:22px;height:22px;border-radius:50%;border:2px solid var(--card);
-  display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#fff;
-  margin-left:-5px;flex-shrink:0;
-}
-.ava:first-child{margin-left:0}
-.ava-r{background:#b04060}.ava-p{background:#7040a8}.ava-g{background:#2a7a50}.ava-b{background:#2858b0}.ava-gray{background:#444;font-size:8px}
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: linear-gradient(180deg, #080c10ee, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid #1a2a3a44;
+  }
+  .nav-logo {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.1rem; color: var(--accent);
+    letter-spacing: 0.15em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.12em;
+    color: var(--muted); text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px; background: var(--accent);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { width: 100%; }
 
-/* ── HOME CHAT ── */
-.home-chat-section{
-  padding:0 20px 70px;max-width:1060px;margin:0 auto;width:100%;
-}
-.home-chat-grid{
-  display:grid;
-  grid-template-columns:200px 1fr;
-  gap:0;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--rl);
-  overflow:hidden;
-  height:440px;
-}
-@media(max-width:600px){
-  .home-chat-grid{grid-template-columns:1fr;height:auto}
-  .hchat-rooms{display:none}
-  .hchat-main{height:420px}
-}
-.hchat-rooms{
-  border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-  overflow:hidden;
-}
-.hchat-rooms-head{
-  padding:12px 12px 8px;border-bottom:1px solid var(--border);
-  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);font-weight:500;
-}
-.hchat-room-list{flex:1;overflow-y:auto;padding:8px}
-.hchat-room-item{
-  padding:8px 10px;border-radius:var(--r);cursor:pointer;margin-bottom:4px;
-  font-size:12px;color:var(--t2);transition:all .18s;display:flex;align-items:center;gap:7px;
-}
-.hchat-room-item:hover{background:var(--lift);color:var(--t1)}
-.hchat-room-item.active{background:var(--rose2);color:var(--rose);border:1px solid rgba(224,112,144,.2)}
-.hchat-main{
-  display:grid;grid-template-rows:auto 1fr auto;min-height:0;
-}
-.hchat-header{
-  padding:12px 16px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.hchat-title{font-size:14px;font-weight:500;color:var(--t1)}
-.hchat-sub{font-size:11px;color:var(--t3);margin-top:2px}
-.hchat-feed{
-  overflow-y:auto;padding:14px 14px;
-  display:flex;flex-direction:column;gap:10px;
-}
-.hchat-msg{display:flex;gap:9px;align-items:flex-start}
-.hchat-ava{
-  width:30px;height:30px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;
-}
-.hchat-bubble{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:8px 11px;flex:1;min-width:0}
-.hchat-meta{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.hchat-user{font-size:11px;font-weight:500;color:var(--t1)}
-.hchat-role{font-size:10px;color:var(--rose);padding:1px 6px;background:var(--rose2);border-radius:20px}
-.hchat-time{font-size:10px;color:var(--t3);margin-left:auto}
-.hchat-text{font-size:12px;color:var(--t2);line-height:1.55}
-.hchat-reacts{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
-.react-chip{
-  padding:2px 7px;border-radius:20px;border:1px solid var(--border);
-  font-size:10px;color:var(--t3);cursor:pointer;background:var(--bg2);
-}
-.react-chip:hover,.react-chip.on{border-color:var(--rose);color:var(--rose);background:var(--rose2)}
-.hchat-foot{
-  padding:10px 12px;border-top:1px solid var(--border);
-  display:flex;gap:8px;align-items:center;
-}
-.hchat-inp{
-  flex:1;padding:9px 12px;border-radius:var(--r);
-  background:var(--bg2);border:1px solid var(--border2);
-  color:var(--t1);font-size:13px;outline:none;min-width:0;
-}
-.hchat-inp:focus{border-color:var(--rose);box-shadow:0 0 0 2px var(--rose2)}
-.hchat-inp::placeholder{color:var(--t3)}
-.hchat-send{
-  padding:9px 14px;border-radius:var(--r);
-  background:var(--rose);border:none;color:#fff;font-size:13px;
-  cursor:pointer;transition:opacity .2s;white-space:nowrap;
-}
-.hchat-send:hover{opacity:.85}
+  /* SECTIONS */
+  section { position: relative; z-index: 1; }
 
-/* ── AUTH PAGES ── */
-.auth-center{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
-.auth-box{
-  width:400px;max-width:100%;padding:40px 36px;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--rxl);animation:fadeUp .4s ease;
-}
-.auth-logo{font-family:var(--fd);font-size:22px;color:var(--t1);text-align:center;margin-bottom:4px}
-.auth-logo em{color:var(--rose);font-style:normal}
-.auth-desc{font-size:13px;color:var(--t3);text-align:center;margin-bottom:28px}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:11px;font-weight:500;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:5px}
-.field input{
-  width:100%;padding:10px 13px;background:var(--bg2);
-  border:1px solid var(--border2);border-radius:var(--r);
-  color:var(--t1);font-size:13px;outline:none;transition:border .2s,box-shadow .2s;
-}
-.field input:focus{border-color:var(--rose);box-shadow:0 0 0 3px var(--rose2)}
-.field input::placeholder{color:var(--t3)}
-.btn-full{
-  width:100%;padding:12px;border-radius:var(--r);
-  background:var(--rose);border:none;color:#fff;
-  font-size:14px;font-weight:500;cursor:pointer;margin-top:6px;transition:opacity .2s;
-}
-.btn-full:hover{opacity:.88}
-.auth-switch{text-align:center;margin-top:18px;font-size:13px;color:var(--t3)}
-.auth-switch a{color:var(--rose);cursor:pointer;font-weight:500}
-.forgot-row{text-align:right;margin-bottom:16px}
-.forgot-row a{font-size:12px;color:var(--t3);cursor:pointer}
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 7rem 4rem 4rem;
+    overflow: hidden;
+    text-align: center;
+  }
+  .hero-inner { max-width: 900px; width: 100%; }
+  .hero-inner { max-width: 900px; }
+  .hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem; color: var(--accent);
+    letter-spacing: 0.25em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .hero-tag::before {
+    content: ''; display: block;
+    width: 40px; height: 1px; background: var(--accent);
+  }
+  .hero-name {
+    font-size: clamp(3rem, 5.5vw, 7rem);
+    font-weight: 800; line-height: 0.95;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #ffffff 0%, #a0c8e8 50%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    color: var(--accent2); letter-spacing: 0.15em;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+ .hero-bio {
+    font-size: 1.05rem; color: var(--muted);
+    line-height: 1.75; max-width: 600px;
+    animation: fadeUp 0.8s 0.3s ease both;
+    margin: 0 auto 2.5rem auto;
+  }
+  .hero-bio strong { color: var(--text); }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.8s 0.45s ease both;
+  }
+  .btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.12em;
+    text-transform: uppercase; text-decoration: none;
+    padding: 0.85rem 2rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: transparent;
+    cursor: none;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .btn::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--accent); transform: scaleX(0);
+    transform-origin: left; transition: transform 0.3s;
+  }
+  .btn:hover::before { transform: scaleX(1); }
+  .btn:hover { color: #080c10; box-shadow: var(--glow); }
+  .btn span { position: relative; z-index: 1; }
+  .btn-ghost {
+    border-color: var(--border); color: var(--muted);
+  }
+  .btn-ghost::before { background: var(--border); }
+  .btn-ghost:hover { color: var(--text); box-shadow: none; }
 
-/* ── ROOM PAGE ── */
-#pg-room{background:var(--bg)}
-.room-shell{display:grid;grid-template-columns:1fr;grid-template-rows:auto auto 1fr auto;height:100vh;overflow:hidden}
-.room-bar{
-  display:flex;align-items:center;gap:8px;padding:0 14px;
-  height:52px;background:var(--bg2);border-bottom:1px solid var(--border);
-  flex-shrink:0;overflow:hidden;
-}
-.room-bar-l{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
-.room-bar-r{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.back-btn{
-  display:flex;align-items:center;gap:5px;padding:6px 10px;
-  border-radius:var(--r);border:1px solid var(--border);background:var(--lift);
-  color:var(--t2);cursor:pointer;font-size:12px;font-weight:500;transition:all .2s;white-space:nowrap;
-}
-.back-btn:hover{border-color:var(--rose);color:var(--rose)}
-.room-name{font-family:var(--fd);font-size:15px;color:var(--t1);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.room-live-chip{
-  display:flex;align-items:center;gap:4px;padding:3px 9px;
-  border-radius:20px;background:var(--rose2);border:1px solid rgba(224,112,144,.25);
-  font-size:11px;color:var(--rose);flex-shrink:0;
-}
-.code-chip{
-  display:flex;align-items:center;gap:4px;padding:3px 9px;
-  border-radius:20px;background:rgba(201,164,74,.1);border:1px solid rgba(201,164,74,.3);
-  font-size:11px;color:var(--gold);flex-shrink:0;cursor:pointer;
-}
-.code-chip:hover{opacity:.8}
-.sep{width:1px;height:18px;background:var(--border);flex-shrink:0}
+  /* Floating blobs */
+  .blob {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); pointer-events: none; z-index: 0;
+  }
+  .blob-1 { width: 500px; height: 500px; background: #00f5c415; top: -100px; right: -100px; }
+  .blob-2 { width: 350px; height: 350px; background: #0af15; bottom: 0; left: 20%; }
 
-.presence-bar{
-  display:flex;align-items:center;gap:7px;padding:0 14px;
-  height:32px;background:var(--bg3);border-bottom:1px solid var(--border);
-  overflow-x:auto;flex-shrink:0;
-}
-.presence-bar::-webkit-scrollbar{display:none}
-.p-label{font-size:10px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;flex-shrink:0}
-.p-chip{
-  display:flex;align-items:center;gap:5px;padding:2px 9px;
-  border-radius:20px;background:var(--card);border:1px solid var(--border);
-  font-size:11px;color:var(--t2);flex-shrink:0;
-}
-.p-dot{width:5px;height:5px;border-radius:50%;background:var(--rose)}
-.p-dot.g{background:#4aaa7a}.p-dot.p{background:var(--plum)}
+  /* SECTION COMMON */
+  .section-wrap {
+    max-width: 1100px; margin: 0 auto;
+    padding: 7rem 4rem;
+  }
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem; color: var(--accent);
+    letter-spacing: 0.3em; text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .section-label::before {
+    content: ''; width: 30px; height: 1px; background: var(--accent);
+  }
+  .section-heading {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800; letter-spacing: -0.03em;
+    margin-bottom: 3.5rem;
+    color: var(--text);
+  }
+  .section-heading span { color: var(--accent); }
 
-/* room layout */
-.room-content{display:flex;flex:1;overflow:hidden;min-height:0}
+  /* ABOUT */
+  #about { background: var(--bg2); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: start;
+  }
+  .about-text p {
+    color: var(--muted); line-height: 1.85; font-size: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  .about-text p strong { color: var(--text); }
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .stat-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%; background: var(--accent);
+  }
+  .stat-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 2rem; color: var(--accent); font-weight: 700;
+  }
+  .stat-label {
+    font-size: 0.78rem; color: var(--muted);
+    letter-spacing: 0.08em; margin-top: 0.3rem;
+    text-transform: uppercase;
+  }
+  .about-extras { margin-top: 2rem; }
+  .extra-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border); color: var(--muted);
+    margin: 0.25rem; letter-spacing: 0.08em;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .extra-tag:hover { border-color: var(--accent); color: var(--accent); }
 
-/* left dash panel */
-.dash-panel{
-  width:0;overflow:hidden;flex-shrink:0;
-  transition:width .3s cubic-bezier(.4,0,.2,1);
-  background:var(--bg2);border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-}
-.dash-panel.open{width:260px}
-.dash-inner{width:260px;height:100%;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
-.dash-section{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
-.dash-sec-head{
-  padding:10px 13px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;cursor:pointer;
-}
-.dash-sec-title{font-size:12px;font-weight:500;color:var(--t1)}
-.dash-sec-arr{font-size:12px;color:var(--t3);transition:transform .2s}
-.dash-section.open .dash-sec-arr{transform:rotate(90deg)}
-.dash-sec-body{display:none;padding:10px 13px;display:flex;flex-direction:column;gap:6px}
-.dash-section.open .dash-sec-body{display:flex}
-.dash-row{
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-  padding:8px 10px;border-radius:var(--r);background:var(--bg2);border:1px solid var(--border);
-}
-.dash-row-l{min-width:0}
-.dash-row-name{font-size:12px;color:var(--t1);font-weight:500}
-.dash-row-sub{font-size:10px;color:var(--t3);margin-top:2px}
-.dash-tag{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--rose2);color:var(--rose);border:1px solid rgba(224,112,144,.2);flex-shrink:0}
-.dash-tag.g{background:rgba(74,170,122,.1);color:#4aaa7a;border-color:rgba(74,170,122,.2)}
-.dash-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 13px}
-.dash-stat{padding:9px;background:var(--bg2);border-radius:var(--r);border:1px solid var(--border)}
-.dash-stat-num{font-family:var(--fd);font-size:18px;color:var(--t1)}
-.dash-stat-lbl{font-size:10px;color:var(--t3);margin-top:2px}
+  /* SKILLS */
+  #skills { background: var(--bg); }
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .skill-group {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 1.75rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .skill-group:hover { border-color: var(--accent2); transform: translateY(-4px); box-shadow: var(--glow2); }
+  .skill-group-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem; color: var(--accent2);
+    letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .skill-group-title::before {
+    content: '▸'; color: var(--accent);
+  }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; padding: 0.35rem 0.9rem;
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--text); letter-spacing: 0.05em;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .pill:hover { background: var(--accent); border-color: var(--accent); color: #080c10; }
 
-/* center video */
-.vid-center{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-.vid-area{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;background:var(--bg);overflow:hidden}
-.vid-wrap{
-  width:100%;max-width:720px;aspect-ratio:16/9;
-  background:#06040e;border-radius:var(--rl);
-  border:1.5px solid var(--border);position:relative;overflow:hidden;cursor:pointer;
-  transition:border-color .25s;
-}
-.vid-wrap:hover,.vid-wrap.playing{border-color:rgba(224,112,144,.5)}
-.vid-bg{
-  width:100%;height:100%;
-  background:radial-gradient(ellipse at 35% 45%,#180a20,#06040e);
-  display:flex;align-items:center;justify-content:center;
-}
-.play-btn{
-  width:60px;height:60px;border-radius:50%;
-  background:rgba(224,112,144,.15);border:1.5px solid var(--rose);
-  display:flex;align-items:center;justify-content:center;transition:all .25s;
-}
-.vid-wrap:hover .play-btn,.vid-wrap.playing .play-btn{background:rgba(224,112,144,.28);transform:scale(1.06)}
-.play-icon{width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid var(--rose);margin-left:4px}
-.pause-icon{display:none;gap:4px}
-.pause-icon span{width:4px;height:18px;background:var(--rose);border-radius:2px}
-.vid-wrap.playing .play-icon{display:none}
-.vid-wrap.playing .pause-icon{display:flex}
-.vid-label{
-  position:absolute;bottom:0;left:0;right:0;padding:20px 14px 10px;
-  background:linear-gradient(to top,rgba(6,4,14,.9),transparent);
-  font-size:12px;color:var(--t2);font-family:var(--fd);letter-spacing:.3px;
-}
-.react-floats{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.float-em{position:absolute;bottom:50px;font-size:20px;animation:floatUp 2s ease forwards;pointer-events:none}
-@keyframes floatUp{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-160px)}}
+  /* PROJECTS */
+  #projects { background: var(--bg2); }
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 2rem; position: relative; overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+  .project-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: var(--glow); }
+  .project-card::after {
+    content: ''; position: absolute; top: 0; right: 0;
+    width: 60px; height: 60px;
+    background: linear-gradient(225deg, var(--accent)22, transparent 70%);
+    pointer-events: none;
+  }
+  .project-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem; color: var(--accent);
+    letter-spacing: 0.2em; margin-bottom: 1rem; opacity: 0.7;
+  }
+  .project-name {
+    font-size: 1.3rem; font-weight: 800;
+    letter-spacing: -0.02em; margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+  .project-desc {
+    font-size: 0.88rem; color: var(--muted);
+    line-height: 1.7; margin-bottom: 1.5rem;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .project-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; padding: 0.2rem 0.6rem;
+    border: 1px solid var(--accent3); color: var(--accent3);
+    letter-spacing: 0.06em;
+  }
 
-.ctrl-bar{
-  padding:8px 14px;background:var(--bg3);border-top:1px solid var(--border);
-  display:flex;align-items:center;gap:8px;flex-wrap:nowrap;overflow-x:auto;
-}
-.ctrl-bar::-webkit-scrollbar{display:none}
-.ctrl{
-  width:32px;height:32px;border-radius:var(--r);background:var(--card);
-  border:1px solid var(--border);color:var(--t2);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;font-size:13px;
-  transition:all .2s;flex-shrink:0;
-}
-.ctrl:hover{border-color:var(--rose);color:var(--rose)}
-.ctrl.on{border-color:var(--rose);color:var(--rose);background:var(--rose2)}
-.host-badge{
-  font-size:10px;color:var(--gold);padding:2px 7px;
-  background:rgba(201,164,74,.1);border:1px solid rgba(201,164,74,.3);
-  border-radius:20px;white-space:nowrap;flex-shrink:0;
-}
-.prog-wrap{flex:1;min-width:40px;height:4px;background:var(--lift);border-radius:2px;cursor:pointer;position:relative}
-.prog-fill{height:100%;background:var(--rose);border-radius:2px;pointer-events:none}
-.time-lbl{font-size:11px;color:var(--t3);white-space:nowrap;flex-shrink:0}
+  /* EXPERIENCE */
+  #experience { background: var(--bg); }
+  .exp-timeline { position: relative; padding-left: 2rem; }
+  .exp-timeline::before {
+    content: ''; position: absolute; left: 0; top: 8px; bottom: 0;
+    width: 1px; background: linear-gradient(180deg, var(--accent), transparent);
+  }
+  .exp-item {
+    position: relative; margin-bottom: 3rem;
+    padding-left: 2rem;
+  }
+  .exp-item::before {
+    content: ''; position: absolute; left: -2.2rem; top: 8px;
+    width: 8px; height: 8px; background: var(--accent);
+    border-radius: 50%; box-shadow: 0 0 12px var(--accent);
+  }
+  .exp-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem; color: var(--accent2);
+    letter-spacing: 0.15em; margin-bottom: 0.5rem;
+  }
+  .exp-title {
+    font-size: 1.15rem; font-weight: 800;
+    margin-bottom: 0.2rem; color: var(--text);
+  }
+  .exp-company {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; color: var(--accent);
+    margin-bottom: 1rem; letter-spacing: 0.08em;
+  }
+  .exp-bullets { list-style: none; }
+  .exp-bullets li {
+    font-size: 0.88rem; color: var(--muted);
+    line-height: 1.65; margin-bottom: 0.5rem;
+    padding-left: 1.2rem; position: relative;
+  }
+  .exp-bullets li::before {
+    content: '▸'; position: absolute; left: 0;
+    color: var(--accent); font-size: 0.7rem;
+  }
 
-/* right chat */
-.chat-panel{
-  width:300px;flex-shrink:0;display:flex;flex-direction:column;
-  background:var(--bg2);border-left:1px solid var(--border);
-  transition:width .3s;
-}
-.chat-panel.collapsed{width:0;overflow:hidden}
-.chat-head{
-  padding:10px 12px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
-}
-.chat-head-title{font-size:14px;font-weight:500;color:var(--t1)}
-.chat-feed{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
-.cmsg{display:flex;gap:8px;align-items:flex-start}
-.cmsg-ava{
-  width:26px;height:26px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff;
-}
-.cmsg-bub{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:7px 10px;flex:1;min-width:0}
-.cmsg-meta{display:flex;align-items:center;gap:5px;margin-bottom:3px;flex-wrap:wrap}
-.cmsg-name{font-size:11px;font-weight:500;color:var(--t1)}
-.cmsg-role{font-size:9px;color:var(--rose);padding:1px 5px;background:var(--rose2);border-radius:20px}
-.cmsg-time{font-size:9px;color:var(--t3);margin-left:auto}
-.cmsg-text{font-size:12px;color:var(--t2);line-height:1.5;word-break:break-word}
-.chat-foot{
-  padding:9px 11px;border-top:1px solid var(--border);
-  display:flex;gap:7px;align-items:center;flex-shrink:0;
-}
-.room-chat-inp{
-  flex:1;padding:8px 11px;border-radius:var(--r);background:var(--card);
-  border:1px solid var(--border2);color:var(--t1);font-size:12px;outline:none;min-width:0;
-}
-.room-chat-inp:focus{border-color:var(--rose);box-shadow:0 0 0 2px var(--rose2)}
-.room-chat-inp::placeholder{color:var(--t3)}
-.room-chat-send{
-  padding:8px 12px;border-radius:var(--r);background:var(--rose2);
-  border:1px solid rgba(224,112,144,.3);color:var(--rose);cursor:pointer;font-size:12px;transition:all .2s;
-}
-.room-chat-send:hover{background:var(--rose);color:#fff}
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-top: 4rem; }
+  .edu-card {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 1.75rem;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .edu-card:hover { border-color: var(--accent3); transform: translateY(-4px); }
+  .edu-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--accent3), var(--accent));
+  }
+  .edu-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem; color: var(--accent3);
+    letter-spacing: 0.15em; margin-bottom: 0.6rem;
+  }
+  .edu-school { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .edu-detail { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
 
-/* ── SCHEDULE PANEL ── */
-.sched-overlay{
-  position:fixed;inset:0;background:rgba(6,4,14,.65);z-index:400;
-  display:none;align-items:flex-end;justify-content:center;
-}
-.sched-overlay.open{display:flex}
-.sched-card{
-  width:min(540px,100vw);background:var(--card);
-  border:1px solid var(--border2);border-bottom:none;
-  border-radius:20px 20px 0 0;padding:24px 24px 30px;
-  animation:slideUp .3s ease;
-}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.sched-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.sched-h{font-family:var(--fd);font-size:18px;color:var(--t1)}
-.close-btn{width:30px;height:30px;border-radius:var(--r);border:1px solid var(--border);background:var(--lift);color:var(--t2);cursor:pointer;font-size:16px;transition:all .2s}
-.close-btn:hover{border-color:var(--rose);color:var(--rose)}
-.sched-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-@media(max-width:480px){.sched-grid{grid-template-columns:1fr}}
-.sched-field label{display:block;font-size:11px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
-.sched-field input,.sched-field select{
-  width:100%;padding:9px 11px;border-radius:var(--r);background:var(--bg2);
-  border:1px solid var(--border2);color:var(--t1);font-size:13px;outline:none;
-}
-.sched-field input:focus,.sched-field select:focus{border-color:var(--rose)}
-.upcoming-list{margin-bottom:16px}
-.upcoming-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:8px}
-.upcoming-item{
-  display:flex;align-items:center;gap:10px;padding:8px 11px;
-  border-radius:var(--r);border:1px solid var(--border);background:var(--bg2);margin-bottom:6px;
-}
-.udate{font-size:11px;color:var(--rose);font-weight:500;white-space:nowrap}
-.uname{font-size:13px;color:var(--t1);flex:1}
-.uchip{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--rose2);color:var(--rose);border:1px solid rgba(224,112,144,.2)}
+  /* CONTACT */
+  #contact { background: var(--bg2); }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: start;
+  }
+  .contact-text p {
+    color: var(--muted); line-height: 1.8; font-size: 1rem; margin-bottom: 2rem;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 1rem;
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem; color: var(--muted);
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateX(6px); }
+  .contact-link-icon {
+    font-size: 1.1rem; color: var(--accent);
+    min-width: 24px; text-align: center;
+  }
+  .cert-list { margin-top: 0; }
+  .cert-item {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 1.2rem 1.5rem; margin-bottom: 0.75rem;
+    font-size: 0.85rem; color: var(--muted);
+    display: flex; align-items: center; gap: 1rem;
+    transition: border-color 0.2s, transform 0.2s, color 0.2s;
+    text-decoration: none;
+  }
+  .cert-item:hover { border-color: var(--accent3); transform: translateX(6px); color: var(--text); }
+  .cert-icon { color: var(--accent); font-size: 0.9rem; }
 
-/* ── SETTINGS DROPDOWN ── */
-.set-drop{
-  position:fixed;top:58px;right:12px;z-index:350;width:200px;
-  background:var(--card);border:1px solid var(--border2);border-radius:var(--rl);
-  padding:12px;box-shadow:0 10px 36px rgba(0,0,0,.4);
-  transform:translateY(-8px) scale(.97);opacity:0;pointer-events:none;
-  transition:all .2s;
-}
-.set-drop.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto}
-.set-group-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:7px;margin-top:10px}
-.set-group-label:first-child{margin-top:0}
-.emoji-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
-.emoj{
-  width:28px;height:28px;border-radius:var(--r);background:var(--bg2);
-  border:1px solid var(--border);cursor:pointer;font-size:14px;
-  display:flex;align-items:center;justify-content:center;transition:all .18s;
-}
-.emoj:hover{border-color:var(--rose);transform:scale(1.15)}
-.set-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0}
-.set-row label{font-size:12px;color:var(--t2)}
-.set-row input[type=checkbox]{accent-color:var(--rose)}
-.set-row select{background:var(--bg2);border:1px solid var(--border);color:var(--t1);font-size:11px;padding:2px 5px;border-radius:5px;outline:none}
+  /* FOOTER */
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg);
+  }
+  footer p {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem; color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .footer-accent { color: var(--accent); }
 
-/* ── JOIN MODAL ── */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(6,4,14,.7);z-index:500;
-  display:none;align-items:center;justify-content:center;padding:16px;
-}
-.modal-overlay.open{display:flex}
-.modal-card{
-  width:min(400px,100%);background:var(--card);border:1px solid var(--border2);
-  border-radius:var(--rxl);padding:28px 24px 22px;position:relative;
-  animation:fadeUp .3s ease;
-}
-.modal-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:var(--r);border:1px solid var(--border);background:var(--lift);color:var(--t2);cursor:pointer;font-size:17px;transition:all .2s}
-.modal-close:hover{border-color:var(--rose);color:var(--rose)}
-.modal-kicker{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rose);margin-bottom:8px}
-.modal-h{font-family:var(--fd);font-size:26px;color:var(--t1);margin-bottom:8px}
-.modal-p{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:20px}
-.code-input-wrap label{display:block;font-size:11px;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:7px}
-.code-input{
-  width:100%;padding:14px;border-radius:var(--rl);border:1px solid var(--border2);
-  background:var(--bg);color:var(--t1);font-size:26px;letter-spacing:8px;
-  text-align:center;font-family:var(--fd);outline:none;
-}
-.code-input:focus{border-color:var(--rose);box-shadow:0 0 0 3px var(--rose2)}
-.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
-.modal-note{font-size:11px;color:var(--t3);margin-top:12px;line-height:1.5}
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
 
-/* ── FLOATING AI ── */
-.ai-fab{
-  position:fixed;right:20px;bottom:20px;z-index:900;
-  width:54px;height:54px;border-radius:50%;
-  background:linear-gradient(135deg,var(--rose),var(--plum));
-  border:none;color:#fff;font-size:20px;cursor:pointer;
-  box-shadow:0 12px 36px rgba(0,0,0,.3);transition:transform .25s;
-}
-.ai-fab:hover{transform:scale(1.06)}
-.ai-window{
-  position:fixed;right:18px;bottom:84px;z-index:900;
-  width:320px;max-width:calc(100vw - 20px);
-  background:var(--card);border:1px solid var(--border2);
-  border-radius:18px;overflow:hidden;
-  display:none;flex-direction:column;
-  box-shadow:0 20px 60px rgba(0,0,0,.4);
-}
-.ai-window.open{display:flex}
-.ai-win-head{
-  padding:14px 14px 10px;background:var(--bg2);border-bottom:1px solid var(--border);
-  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
-}
-.ai-win-title{font-family:var(--fd);font-size:17px;color:var(--t1)}
-.ai-win-sub{font-size:11px;color:var(--t3);margin-top:3px}
-.ai-chips{display:flex;flex-wrap:wrap;gap:6px;padding:12px 14px 0}
-.ai-chip{
-  padding:6px 10px;border-radius:20px;border:1px solid var(--border2);
-  background:var(--bg2);color:var(--t2);font-size:11px;cursor:pointer;transition:all .18s;
-}
-.ai-chip:hover{border-color:var(--rose);color:var(--rose);background:var(--rose2)}
-.ai-msgs{max-height:280px;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
-.ai-msg{display:flex}
-.ai-msg.user{justify-content:flex-end}
-.ai-bub{max-width:86%;padding:9px 11px;border-radius:11px;font-size:12px;line-height:1.55}
-.ai-msg.bot .ai-bub{background:var(--bg2);border:1px solid var(--border);color:var(--t2)}
-.ai-msg.user .ai-bub{background:var(--rose2);border:1px solid rgba(224,112,144,.25);color:var(--t1)}
-.ai-inp-row{display:flex;gap:7px;padding:0 12px 12px}
-.ai-inp{
-  flex:1;padding:9px 11px;border-radius:11px;border:1px solid var(--border2);
-  background:var(--bg2);color:var(--t1);font-size:12px;outline:none;
-}
-.ai-inp:focus{border-color:var(--rose)}
-.ai-send{
-  padding:9px 12px;border-radius:11px;border:none;
-  background:var(--rose);color:#fff;cursor:pointer;font-size:14px;
-}
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); }
 
-/* ── TOAST ── */
-.toast{
-  position:fixed;bottom:24px;right:20px;z-index:9999;
-  padding:10px 16px;background:var(--card);
-  border:1px solid var(--border2);border-left:3px solid var(--rose);
-  border-radius:var(--r);color:var(--t1);font-size:12px;
-  box-shadow:0 8px 28px rgba(0,0,0,.35);animation:slideIn .25s ease;pointer-events:none;
-}
-@keyframes slideIn{from{transform:translateX(50px);opacity:0}to{transform:translateX(0);opacity:1}}
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .section-wrap { padding: 5rem 1.5rem; }
+    #hero { padding: 6rem 1.5rem 3rem; }
+    .about-grid, .contact-grid, .edu-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
 
-/* ── RESPONSIVE ── */
-@media(max-width:900px){
-  .chat-panel{width:240px}
-  .dash-panel.open{width:230px}
-}
-@media(max-width:700px){
-  .nav-tab:not(.cta):not([data-keep]){display:none}
-  .chat-panel{width:200px}
-  .dash-inner{width:230px}
-  .dash-panel.open{width:230px}
-}
-@media(max-width:560px){
-  .chat-panel{position:fixed;top:0;right:0;bottom:0;z-index:250;width:280px !important;transform:translateX(100%);transition:transform .3s}
-  .chat-panel.mob-open{transform:translateX(0)}
-  .chat-panel.collapsed{transform:translateX(100%)}
-  .code-chip{display:none}
-  .room-name{max-width:120px}
-}
+  /* Typing cursor blink */
+  .blink { animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* Scanline effect for hero */
+  .scanline {
+    position: absolute; left: 0; right: 0;
+    height: 2px; background: linear-gradient(90deg, transparent, var(--accent)33, transparent);
+    animation: scan 4s linear infinite;
+    pointer-events: none; z-index: 2;
+  }
+  @keyframes scan {
+    from { top: 0; } to { top: 100%; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ════ NAV ════ -->
-<nav class="topnav" id="topnav">
-  <div class="nav-logo" onclick="go('land')">Sync<em>Stream</em></div>
-  <div class="nav-tabs" id="nav-tabs">
-    <button class="nav-tab active" data-keep data-page="land" onclick="go('land')">Home</button>
-    <button class="nav-tab" data-page="rooms-tab" onclick="scrollToRooms()">Live Rooms</button>
-    <button class="nav-tab" data-page="chat-tab" onclick="scrollToChat()">Community Chat</button>
-    <button class="nav-tab" onclick="go('login')">Log In</button>
-    <button class="nav-tab cta" onclick="go('signup')">Sign Up</button>
-  </div>
-  <div class="nav-right">
-    <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">☾</button>
-  </div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">AR<span class="blink">_</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
 </nav>
 
-<!-- ════════════════════════
-     PAGE: LAND
-════════════════════════ -->
-<div class="page active" id="pg-land">
-  <div class="page-body">
+<!-- HERO -->
+<section id="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="scanline"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">Full-Stack Developer &amp; Cybersecurity Enthusiast</div>
+    <h1 class="hero-name">Amanjeeta<br/>Rath</h1>
+    <p class="hero-title">Building the web, securing the future</p>
+    <p class="hero-bio">
+      <strong>2nd-year CSE undergrad @ SRM University AP</strong> specializing in Cybersecurity.
+      Passionate about full-stack development, DSA, and AI-driven solutions.
+      Events Lead at the Center for Drone Technology. CGPA: <strong>9.05 / 10.0</strong>.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn"><span>View Projects</span></a>
+      <a href="#contact" class="btn btn-ghost"><span>Get in Touch</span></a>
+    </div>
+  </div>
+</section>
 
-    <!-- HERO -->
-    <section class="hero" id="sec-hero">
-      <div class="hero-pill"><span class="pulse"></span>Open Beta</div>
-      <h1>Cinema is better<br>when you watch it <em>together</em></h1>
-      <p>Host real-time streaming rooms, chat live, and share the moment — with an AI assistant always one tap away.</p>
-      <div class="hero-btns">
-        <button class="btn btn-solid" onclick="createRoom()">+ Create a Room</button>
-        <button class="btn btn-ghost" onclick="openJoin()">↗ Join with Code</button>
-      </div>
-      <div class="hero-stats">
-        <div class="stat"><div class="num">12<em>k</em></div><div class="lbl">Active rooms</div></div>
-        <div class="stat"><div class="num">4<em>+</em></div><div class="lbl">Streaming sources</div></div>
-        <div class="stat"><div class="num">98<em>%</em></div><div class="lbl">Sync accuracy</div></div>
-      </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section class="features">
-      <div class="sec-label">What you get</div>
-      <h2 class="sec-h">Everything for a <em>shared</em> cinematic moment</h2>
-      <div class="feat-grid">
-        <div class="feat-card"><div class="feat-icon">🎬</div><h3>Watch Together</h3><p>Frame-perfect sync. The host controls playback — everyone else follows seamlessly.</p></div>
-        <div class="feat-card"><div class="feat-icon">📡</div><h3>Multi-Source</h3><p>YouTube, Vimeo, direct links — stream from any source in one unified room.</p></div>
-        <div class="feat-card"><div class="feat-icon">✦</div><h3>AI Assistant</h3><p>Donna helps with controls, sync issues, and room management — always available.</p></div>
-        <div class="feat-card"><div class="feat-icon">🗓</div><h3>Schedule Streams</h3><p>Plan ahead, send invites, queue your films before guests arrive.</p></div>
-      </div>
-    </section>
-
-    <!-- LIVE ROOMS -->
-    <section class="rooms-section" id="sec-rooms">
-      <div class="sec-label" style="text-align:left;margin-bottom:8px">Live right now</div>
-      <h2 class="sec-h" style="text-align:left;font-size:clamp(20px,2.5vw,26px);margin-bottom:16px">Join an open room</h2>
-      <div class="rooms-grid" id="rooms-grid">
-        <div class="room-card" onclick="go('room')">
-          <div class="rc-top"><div class="rc-name">Midnight Vault</div><div class="rc-live"><span class="dot"></span>Live</div></div>
-          <div class="rc-film">Nosferatu (1922) • Restored 4K</div>
-          <div class="rc-avatars"><div class="ava ava-r">V</div><div class="ava ava-p">M</div><div class="ava ava-g">E</div><div class="ava ava-gray">+1</div></div>
-        </div>
-        <div class="room-card" onclick="go('room')">
-          <div class="rc-top"><div class="rc-name">Coven Cinema</div><div class="rc-live"><span class="dot"></span>Live</div></div>
-          <div class="rc-film">The Witch (2015)</div>
-          <div class="rc-avatars"><div class="ava ava-p">A</div><div class="ava ava-r">S</div><div class="ava ava-g">K</div><div class="ava ava-gray">+4</div></div>
-        </div>
-        <div class="room-card" onclick="go('room')">
-          <div class="rc-top"><div class="rc-name">Shadow Theater</div><div class="rc-live"><span class="dot"></span>Live</div></div>
-          <div class="rc-film">Suspiria (1977)</div>
-          <div class="rc-avatars"><div class="ava ava-b">D</div><div class="ava ava-r">N</div></div>
-        </div>
-        <div class="room-card" onclick="go('room')">
-          <div class="rc-top"><div class="rc-name">Eclipse Room</div><div class="rc-live"><span class="dot"></span>Live</div></div>
-          <div class="rc-film">The Others (2001)</div>
-          <div class="rc-avatars"><div class="ava ava-g">T</div><div class="ava ava-p">L</div><div class="ava ava-gray">+2</div></div>
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-wrap">
+    <div class="section-label">About</div>
+    <h2 class="section-heading reveal">Who I <span>Am</span></h2>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>I'm a <strong>Computer Science Engineering undergraduate</strong> specializing in Cybersecurity at SRM University, Andhra Pradesh. My core focus areas are full-stack web development, data structures, and emerging technologies like AI and ML.</p>
+        <p>I've completed real-world job simulations with <strong>JPMorgan Chase</strong>, <strong>Commonwealth Bank</strong>, and <strong>Tata iQ</strong> through Forage, gaining hands-on experience with Spring Boot microservices, Kafka, REST APIs, financial cybersecurity, and data analytics.</p>
+        <p>Beyond code, I serve as <strong>Events Lead for the Center for Drone Technology (CDT)</strong> at SRM AP, where I organized Skyquest 2.0 — a national drone hackathon — and led the AERIOUS workshop on quadcopter and fixed-wing builds.</p>
+        <div class="about-extras">
+          <span class="extra-tag">English</span>
+          <span class="extra-tag">Hindi</span>
+          <span class="extra-tag">Odia</span>
+          <span class="extra-tag">🏆 Sports Champion 2018</span>
+          <span class="extra-tag">🏆 Sports Champion 2022</span>
+          <span class="extra-tag">🏆 Sports Champion 2023</span>
+          <span class="extra-tag">Sports Captain</span>
+          <span class="extra-tag">Drone Assembling</span>
         </div>
       </div>
-    </section>
-
-    <!-- COMMUNITY CHAT -->
-    <section class="home-chat-section" id="sec-chat">
-      <div class="sec-label" style="text-align:left;margin-bottom:8px">Community</div>
-      <h2 class="sec-h" style="text-align:left;font-size:clamp(20px,2.5vw,26px);margin-bottom:16px">Chat with watchers</h2>
-      <div class="home-chat-grid">
-        <div class="hchat-rooms">
-          <div class="hchat-rooms-head">Channels</div>
-          <div class="hchat-room-list" id="hchat-room-list"></div>
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-num">9.05</div>
+          <div class="stat-label">CGPA / 10.0</div>
         </div>
-        <div class="hchat-main">
-          <div class="hchat-header">
-            <div>
-              <div class="hchat-title" id="hchat-title"># midnight-vault</div>
-              <div style="font-size:11px;color:var(--t3);margin-top:2px" id="hchat-sub">Public room · horror-night</div>
-            </div>
-            <div class="rc-live" style="font-size:11px"><span class="dot"></span><span id="hchat-online">4 online</span></div>
-          </div>
-          <div class="hchat-feed" id="hchat-feed"></div>
-          <div class="hchat-foot">
-            <input class="hchat-inp" id="hchat-inp" placeholder="Message the channel..." onkeydown="if(event.key==='Enter')sendHomeChat()">
-            <button class="hchat-send" onclick="sendHomeChat()">Send</button>
-          </div>
+        <div class="stat-card">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Industry Simulations</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">Top 45</div>
+          <div class="stat-label">of 422 teams — SIH</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Projects Built</div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-wrap">
+    <div class="section-label">Skills</div>
+    <h2 class="section-heading reveal">Technical <span>Arsenal</span></h2>
+    <div class="skills-grid reveal">
+      <div class="skill-group">
+        <div class="skill-group-title">Languages</div>
+        <div class="skill-pills">
+          <span class="pill">Java</span>
+          <span class="pill">Python</span>
+          <span class="pill">JavaScript</span>
+          <span class="pill">C</span>
+          <span class="pill">C++</span>
+          <span class="pill">R</span>
+          <span class="pill">QBASIC</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Frontend</div>
+        <div class="skill-pills">
+          <span class="pill">React.js</span>
+          <span class="pill">HTML5</span>
+          <span class="pill">CSS3</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Backend &amp; Frameworks</div>
+        <div class="skill-pills">
+          <span class="pill">Node.js</span>
+          <span class="pill">Django</span>
+          <span class="pill">Spring Boot</span>
+          <span class="pill">REST API</span>
+          <span class="pill">Apache Kafka</span>
+          <span class="pill">Maven</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Databases &amp; Tools</div>
+        <div class="skill-pills">
+          <span class="pill">MySQL</span>
+          <span class="pill">DBMS</span>
+          <span class="pill">Spring Data JPA</span>
+          <span class="pill">H2</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">CS Fundamentals</div>
+        <div class="skill-pills">
+          <span class="pill">DSA</span>
+          <span class="pill">ML Fundamentals</span>
+          <span class="pill">Business Analytics</span>
+          <span class="pill">Corporate Finance</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Other</div>
+        <div class="skill-pills">
+          <span class="pill">Drone Assembling</span>
+          <span class="pill">GenAI Tools</span>
+          <span class="pill">EDA</span>
+          <span class="pill">Predictive Modeling</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-label">Projects</div>
+    <h2 class="section-heading reveal">What I've <span>Built</span></h2>
+    <div class="projects-grid reveal">
+      <div class="project-card">
+        <div class="project-num">01</div>
+        <h3 class="project-name">LibroLink</h3>
+        <p class="project-desc">A full-stack platform for peer-to-peer book lending and borrowing. Features user authentication, a searchable book catalog, lending request workflows, and complete transaction history.</p>
+        <div class="project-tags">
+          <span class="project-tag">Full Stack</span>
+          <span class="project-tag">Auth</span>
+          <span class="project-tag">DBMS</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-num">02</div>
+        <h3 class="project-name">RoyalRoutes</h3>
+        <p class="project-desc">A travel web app shining a spotlight on the hidden cultural gems of Rajasthan. Features destination showcases, travel booking, user login, booking management, and a fully responsive UI.</p>
+        <div class="project-tags">
+          <span class="project-tag">React.js</span>
+          <span class="project-tag">Travel Tech</span>
+          <span class="project-tag">Responsive UI</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-num">03</div>
+        <h3 class="project-name">AegisGrid</h3>
+        <p class="project-desc">Fence Monitoring & Management platform built during Smart India Hackathon. Real-time digital fence visualization, monitoring, and management — selected in the top 45 of 422 competing teams.</p>
+        <div class="project-tags">
+          <span class="project-tag">SIH</span>
+          <span class="project-tag">Real-Time</span>
+          <span class="project-tag">Monitoring</span>
+          <span class="project-tag">Top 45</span>
+        </div>
+      </div>
+      <div class="project-card">
+  <div class="project-num">04</div>
+  <h3 class="project-name">StayFinder</h3>
+  <p class="project-desc">A PG and hostel finder platform designed for college students and office workers. Simplifies the search for affordable, verified accommodations with filters, listings, and a seamless booking experience.</p>
+  <div class="project-tags">
+    <span class="project-tag">Full Stack</span>
+    <span class="project-tag">PG Finder</span>
+    <span class="project-tag">Student Housing</span>
+    <span class="project-tag">Responsive UI</span>
   </div>
 </div>
-
-<!-- ════════════════════════
-     PAGE: LOGIN
-════════════════════════ -->
-<div class="page" id="pg-login">
-  <div class="page-body auth-center">
-    <div class="auth-box">
-      <div class="auth-logo">Sync<em>Stream</em></div>
-      <div class="auth-desc">Welcome back. Your room awaits.</div>
-      <div class="field"><label>Email</label><input type="email" placeholder="you@example.com"></div>
-      <div class="field"><label>Password</label><input type="password" placeholder="••••••••"></div>
-      <div class="forgot-row"><a>Forgot password?</a></div>
-      <button class="btn-full" onclick="go('room');toast('Welcome back, Vesper ✓')">Sign In</button>
-      <div class="auth-switch">No account? <a onclick="go('signup')">Create one free</a></div>
-      <div class="auth-switch" style="margin-top:8px"><a onclick="go('land')">← Back to home</a></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ════════════════════════
-     PAGE: SIGNUP
-════════════════════════ -->
-<div class="page" id="pg-signup">
-  <div class="page-body auth-center">
-    <div class="auth-box">
-      <div class="auth-logo">Sync<em>Stream</em></div>
-      <div class="auth-desc">Create your account — it's free.</div>
-      <div class="field"><label>Full Name</label><input type="text" placeholder="Your name"></div>
-      <div class="field"><label>Email</label><input type="email" placeholder="you@example.com"></div>
-      <div class="field"><label>Password</label><input type="password" placeholder="At least 8 characters"></div>
-      <div class="field"><label>Confirm Password</label><input type="password" placeholder="Repeat password"></div>
-      <button class="btn-full" onclick="go('room');toast('Account created! Welcome 🎬')">Create Account</button>
-      <div class="auth-switch">Already have one? <a onclick="go('login')">Sign in</a></div>
-      <div class="auth-switch" style="margin-top:8px"><a onclick="go('land')">← Back to home</a></div>
-    </div>
-  </div>
-</div>
+<!-- EXPERIENCE + EDUCATION -->
+<section id="experience">
+  <div class="section-wrap">
+    <div class="section-label">Experience</div>
+    <h2 class="section-heading reveal">Work &amp; <span>Education</span></h2>
 
-<!-- ════════════════════════
-     PAGE: ROOM
-════════════════════════ -->
-<div class="page" id="pg-room">
-<div class="room-shell">
-
-  <!-- TOP BAR -->
-  <div class="room-bar">
-    <div class="room-bar-l">
-      <button class="icon-btn" onclick="toggleDash()" title="Dashboard">☰</button>
-      <button class="back-btn" onclick="history.back()">← Back</button>
-      <div class="sep"></div>
-      <div class="room-name">Midnight Vault</div>
-      <div class="room-live-chip"><span class="pulse"></span>Live · 4</div>
-      <div class="code-chip" onclick="copyCode()" title="Copy room code">Code 482731</div>
-    </div>
-    <div class="room-bar-r">
-      <button class="icon-btn" onclick="toggleSched()" title="Schedule">🗓</button>
-      <button class="icon-btn" id="set-btn" onclick="toggleSet()" title="Settings">⚙</button>
-      <button class="icon-btn" onclick="toggleTheme()" title="Theme">☾</button>
-      <button class="icon-btn" onclick="toggleMobileChat()" title="Chat" id="mob-chat-btn" style="display:none">💬</button>
-      <button class="back-btn" onclick="go('land')">Home</button>
-    </div>
-  </div>
-
-  <!-- PRESENCE -->
-  <div class="presence-bar">
-    <span class="p-label">Watching</span>
-    <div class="p-chip"><span class="p-dot"></span>Vesper ♔</div>
-    <div class="p-chip"><span class="p-dot p"></span>mortem</div>
-    <div class="p-chip"><span class="p-dot g"></span>elara_d</div>
-    <div class="p-chip"><span class="p-dot"></span>shadow_x</div>
-  </div>
-
-  <!-- CONTENT -->
-  <div class="room-content">
-
-    <!-- DASH LEFT -->
-    <div class="dash-panel" id="dash-panel">
-      <div class="dash-inner">
-        <!-- profile stats -->
-        <div class="dash-section open">
-          <div class="dash-sec-head" onclick="toggleDashSec(this)">
-            <span class="dash-sec-title">Your Profile</span>
-            <span class="dash-sec-arr">›</span>
-          </div>
-          <div class="dash-stat-grid">
-            <div class="dash-stat"><div class="dash-stat-num">18</div><div class="dash-stat-lbl">Rooms created</div></div>
-            <div class="dash-stat"><div class="dash-stat-num">42h</div><div class="dash-stat-lbl">Watch time</div></div>
-            <div class="dash-stat"><div class="dash-stat-num">127</div><div class="dash-stat-lbl">Messages</div></div>
-            <div class="dash-stat"><div class="dash-stat-num">91%</div><div class="dash-stat-lbl">Sync success</div></div>
-          </div>
-        </div>
-        <!-- rooms -->
-        <div class="dash-section open">
-          <div class="dash-sec-head" onclick="toggleDashSec(this)">
-            <span class="dash-sec-title">My Rooms</span><span class="dash-sec-arr">›</span>
-          </div>
-          <div class="dash-sec-body">
-            <div class="dash-row"><div class="dash-row-l"><div class="dash-row-name">Midnight Vault</div><div class="dash-row-sub">Current · 4 watching</div></div><div class="dash-tag">Live</div></div>
-            <div class="dash-row"><div class="dash-row-l"><div class="dash-row-name">Coven Cinema</div><div class="dash-row-sub">Yesterday · invite-only</div></div><div class="dash-tag">Saved</div></div>
-          </div>
-        </div>
-        <!-- participants -->
-        <div class="dash-section">
-          <div class="dash-sec-head" onclick="toggleDashSec(this)">
-            <span class="dash-sec-title">Participants</span><span class="dash-sec-arr">›</span>
-          </div>
-          <div class="dash-sec-body">
-            <div class="dash-row"><div class="dash-row-l"><div class="dash-row-name">Vesper</div><div class="dash-row-sub">Host</div></div><div class="dash-tag">You</div></div>
-            <div class="dash-row"><div class="dash-row-l"><div class="dash-row-name">mortem</div><div class="dash-row-sub">Co-host candidate</div></div><div class="dash-tag g">Active</div></div>
-            <div class="dash-row"><div class="dash-row-l"><div class="dash-row-name">elara_d</div><div class="dash-row-sub">Member</div></div><div class="dash-tag g">Active</div></div>
-          </div>
-        </div>
-        <!-- schedule -->
-        <div class="dash-section">
-          <div class="dash-sec-head" onclick="toggleDashSec(this)">
-            <span class="dash-sec-title">Upcoming</span><span class="dash-sec-arr">›</span>
-          </div>
-          <div class="dash-sec-body">
-            <div class="dash-row"><div class="dash-row-l"><div class="dash-row-name">Fri 9 PM</div><div class="dash-row-sub">The Shining · 4 invited</div></div><div class="dash-tag">Soon</div></div>
-          </div>
-        </div>
-        <!-- analytics -->
-        <div class="dash-section">
-          <div class="dash-sec-head" onclick="toggleDashSec(this)">
-            <span class="dash-sec-title">Analytics</span><span class="dash-sec-arr">›</span>
-          </div>
-          <div class="dash-sec-body">
-            <div class="dash-row"><div class="dash-row-l"><div class="dash-row-name">4 viewers now</div><div class="dash-row-sub">Peak tonight: 7</div></div><div class="dash-tag g">Now</div></div>
-            <div class="dash-row"><div class="dash-row-l"><div class="dash-row-name">Avg watch 32 min</div><div class="dash-row-sub">Top: ❤️ 😱 🌙</div></div><div class="dash-tag">Trend</div></div>
-          </div>
-        </div>
+    <div class="exp-timeline reveal">
+      <div class="exp-item">
+        <div class="exp-date">Feb 2026</div>
+        <div class="exp-title">Software Engineering Job Simulation</div>
+        <div class="exp-company">JPMorgan Chase &amp; Co. · Forage</div>
+        <ul class="exp-bullets">
+          <li>Built a Spring Boot microservice integrating Kafka for high-volume transaction ingestion and deserialization.</li>
+          <li>Designed validation and persistence flows using Spring Data JPA + H2, managing relational user balances.</li>
+          <li>Integrated external Incentive REST API via RestTemplate within transactional workflows.</li>
+          <li>Developed REST endpoints for balance queries with clean layered architecture.</li>
+          <li>Ensured reliability through Maven testing across messaging, DB, and API layers.</li>
+        </ul>
+      </div>
+      <div class="exp-item">
+        <div class="exp-date">Feb 2026</div>
+        <div class="exp-title">Software Engineering Job Simulation</div>
+        <div class="exp-company">Commonwealth Bank · Forage</div>
+        <ul class="exp-bullets">
+          <li>Developed a fully responsive, standards-compliant web page using HTML5 and CSS3 aligned with enterprise branding.</li>
+          <li>Applied web security and financial cybersecurity principles to produce actionable security recommendations.</li>
+          <li>Authored a secure web hosting proposal covering threat mitigation and scalable infrastructure planning.</li>
+        </ul>
+      </div>
+      <div class="exp-item">
+        <div class="exp-date">Feb 2026</div>
+        <div class="exp-title">Data Analytics Job Simulation</div>
+        <div class="exp-company">Tata Group (Tata iQ) · Forage</div>
+        <ul class="exp-bullets">
+          <li>Performed exploratory data analysis using GenAI tools to evaluate data quality and surface risk indicators.</li>
+          <li>Designed a no-code predictive modeling framework for customer delinquency risk assessment.</li>
+          <li>Developed an AI-driven collections strategy incorporating agentic AI, automation pipelines, and ethical AI principles.</li>
+        </ul>
       </div>
     </div>
 
-    <!-- VIDEO CENTER -->
-    <div class="vid-center">
-      <div class="vid-area">
-        <div class="vid-wrap" id="vid-wrap" onclick="togglePlay()">
-          <div class="vid-bg" id="vid-bg">
-            <div class="play-btn">
-              <div class="play-icon"></div>
-              <div class="pause-icon"><span></span><span></span></div>
-            </div>
-          </div>
-          <div class="vid-label">Nosferatu (1922) — Restored · 4K Upscale</div>
-          <div class="react-floats" id="react-floats"></div>
+    <div class="edu-grid reveal">
+      <div class="edu-card">
+        <div class="edu-year">2024 — Present</div>
+        <div class="edu-school">SRM University, AP</div>
+        <div class="edu-detail">B.Tech CSE (Cybersecurity)<br/>CGPA: 9.05 / 10.0<br/>DSA · DBMS · Web Dev · Business Analytics · ML Fundamentals</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-year">2022 — 2024</div>
+        <div class="edu-school">DAV Public School</div>
+        <div class="edu-detail">Higher Secondary Education<br/>Score: 80%<br/>CBSE Board</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-year">2015 — 2022</div>
+        <div class="edu-school">St. Vincent's Convent School</div>
+        <div class="edu-detail">Secondary Education<br/>Score: 94%<br/>ICSE Board · Sports Captain</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-wrap">
+    <div class="section-label">Contact</div>
+    <h2 class="section-heading reveal">Let's <span>Connect</span></h2>
+    <div class="contact-grid reveal">
+      <div class="contact-text">
+        <p>I'm open to internships, collaborations, and interesting projects. Whether you want to talk tech, build something together, or just say hi — reach out!</p>
+        <div class="contact-links">
+          <a href="tel:+919078502760" class="contact-link">
+            <span class="contact-link-icon">📞</span>
+            +91 9078502760
+          </a>
+          <a href="mailto:amanjeeta.r@gmail.com" class="contact-link">
+            <span class="contact-link-icon">✉️</span>
+            amanjeeta.r@gmail.com
+          </a>
+          <a href="https://github.com/Amanjeeta21" target="_blank" class="contact-link">
+            <span class="contact-link-icon">⌥</span>
+            github.com/Amanjeeta21
+          </a>
+          <a href="https://www.linkedin.com/in/amanjeeta-rath-709925316/" target="_blank" class="contact-link">
+            <span class="contact-link-icon">in</span>
+            Amanjeeta Rath — LinkedIn
+          </a>
         </div>
       </div>
-
-      <!-- CONTROLS -->
-      <div class="ctrl-bar">
-        <span class="host-badge">HOST</span>
-        <button class="ctrl" onclick="seekB()" title="−10s">⏮</button>
-        <button class="ctrl on" id="play-ctrl" onclick="togglePlay()">▶</button>
-        <button class="ctrl" onclick="seekF()" title="+10s">⏭</button>
-        <div class="prog-wrap" id="prog-bar" onclick="seekTo(event)"><div class="prog-fill" id="prog-fill" style="width:35%"></div></div>
-        <span class="time-lbl" id="time-lbl">32:14 / 91:00</span>
-        <button class="ctrl" id="mute-ctrl" onclick="toggleMute()" title="Mute">🔊</button>
-        <button class="ctrl" title="Theatre">⛶</button>
-        <button class="ctrl" onclick="syncAll()" title="Sync all">⟳</button>
-        <button class="ctrl" onclick="toggleSet()" title="Reactions">😊</button>
+      <div>
+        <div class="section-label" style="margin-bottom:1.2rem">Certifications</div>
+        <div class="cert-list">
+          <a class="cert-item" href="file:///C:/Users/amanj/OneDrive/Desktop/Virtual%20Job%20Simulations/JP%20Morgan%20Virtual%20Internship%20Certificate.pdf" target="_blank"><span class="cert-icon">◈</span> Software Engineering Simulation — JPMorgan Chase &amp; Co. · Forage · Feb 2026</a>
+          <a class="cert-item" href="file:///C:/Users/amanj/OneDrive/Desktop/Virtual%20Job%20Simulations/Commonwealth%20Bank%20Job%20Simulation%20Certificate.pdf" target="_blank"><span class="cert-icon">◈</span> Software Engineering Simulation — Commonwealth Bank · Forage · Feb 2026</a>
+          <a class="cert-item" href="file:///C:/Users/amanj/OneDrive/Desktop/Virtual%20Job%20Simulations/Tata%20Job%20Simulation%20Certificate.pdf" target="_blank"><span class="cert-icon">◈</span> Data Analytics Simulation — Tata Group / Tata iQ · Forage · Feb 2026</a>
+          <a class="cert-item" href="file:///C:/Users/amanj/Downloads/IBMDesign20260407-31-u8va6u.pdf" target="_blank"><span class="cert-icon">◈</span> Getting Started with Artificial Intelligence · 2026</a>
+        </div>
+        <div style="margin-top:2rem;">
+          <div class="section-label" style="margin-bottom:1.2rem">Achievements</div>
+          <div class="cert-item"><span class="cert-icon">★</span> Organized Skyquest 2.0 — National Drone Hackathon</div>
+          <div class="cert-item"><span class="cert-icon">★</span> Led AERIOUS Workshop — Quadcopter &amp; Fixed-Wing builds</div>
+          <div class="cert-item"><span class="cert-icon">★</span> Top 45 / 422 teams — Smart India Hackathon (SIH)</div>
+          <div class="cert-item"><span class="cert-icon">★</span> Events Lead, CDT — Organizing for Infinitus 2026</div>
+        </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- CHAT RIGHT -->
-    <div class="chat-panel" id="chat-panel">
-      <div class="chat-head">
-        <span class="chat-head-title">Room Chat</span>
-        <button class="icon-btn" onclick="collapseChat()" style="width:28px;height:28px;font-size:13px">×</button>
-      </div>
-      <div class="chat-feed" id="room-feed"></div>
-      <div class="chat-foot">
-        <input class="room-chat-inp" id="room-chat-inp" placeholder="Message..." onkeydown="if(event.key==='Enter')sendRoomChat()">
-        <button class="room-chat-send" onclick="sendRoomChat()">Send</button>
-      </div>
-    </div>
-
-  </div><!-- room-content -->
-</div><!-- room-shell -->
-</div><!-- pg-room -->
-
-<!-- ════ SCHEDULE PANEL ════ -->
-<div class="sched-overlay" id="sched-overlay" onclick="if(event.target===this)toggleSched()">
-  <div class="sched-card">
-    <div class="sched-head">
-      <div class="sched-h">Schedule a Stream</div>
-      <button class="close-btn" onclick="toggleSched()">×</button>
-    </div>
-    <div class="upcoming-list">
-      <div class="upcoming-label">Upcoming</div>
-      <div class="upcoming-item"><div class="udate">Fri 9 PM</div><div class="uname">Horror Night Vol. 2 — The Shining</div><div class="uchip">4 invited</div></div>
-      <div class="upcoming-item"><div class="udate">Sat 8 PM</div><div class="uname">Ghibli Marathon — Spirited Away</div><div class="uchip">7 invited</div></div>
-    </div>
-    <div class="sched-grid">
-      <div class="sched-field"><label>Room Name</label><input type="text" placeholder="Midnight Vault II"></div>
-      <div class="sched-field"><label>Date &amp; Time</label><input type="datetime-local"></div>
-      <div class="sched-field"><label>Film / URL</label><input type="text" placeholder="YouTube, Vimeo…"></div>
-      <div class="sched-field"><label>Invite emails</label><input type="text" placeholder="friend@email.com"></div>
-    </div>
-    <button class="btn-full" onclick="toast('Stream scheduled! Invites sent ✓');toggleSched()">Schedule Stream</button>
-  </div>
-</div>
-
-<!-- ════ SETTINGS DROP ════ -->
-<div class="set-drop" id="set-drop">
-  <div class="set-group-label">Reactions</div>
-  <div class="emoji-row">
-    <div class="emoj" onclick="floatReact('🩸')">🩸</div>
-    <div class="emoj" onclick="floatReact('👻')">👻</div>
-    <div class="emoj" onclick="floatReact('🦇')">🦇</div>
-    <div class="emoj" onclick="floatReact('🌙')">🌙</div>
-    <div class="emoj" onclick="floatReact('💀')">💀</div>
-    <div class="emoj" onclick="floatReact('😱')">😱</div>
-    <div class="emoj" onclick="floatReact('❤️')">❤️</div>
-    <div class="emoj" onclick="floatReact('🕯️')">🕯️</div>
-  </div>
-  <div class="set-group-label">Quality</div>
-  <div class="set-row"><label>Resolution</label><select><option>Auto 1080p</option><option>720p</option><option>480p</option></select></div>
-  <div class="set-group-label">Options</div>
-  <div class="set-row"><label>Subtitles</label><input type="checkbox"></div>
-  <div class="set-row"><label>Theatre dim</label><input type="checkbox"></div>
-</div>
-
-<!-- ════ JOIN MODAL ════ -->
-<div class="modal-overlay" id="join-modal" onclick="if(event.target===this)closeJoin()">
-  <div class="modal-card">
-    <button class="modal-close" onclick="closeJoin()">×</button>
-    <div class="modal-kicker">Join With Code</div>
-    <div class="modal-h">Enter room code</div>
-    <div class="modal-p">Type the 6-digit code your friend shared. You'll jump straight into their stream.</div>
-    <div class="code-input-wrap">
-      <label for="join-input">Room Code</label>
-      <input class="code-input" id="join-input" type="text" maxlength="6" inputmode="numeric" placeholder="000000">
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeJoin()">Cancel</button>
-      <button class="btn btn-solid" onclick="submitJoin()">Join Room</button>
-    </div>
-    <div class="modal-note">Demo codes: 482731 · 184205 · 590116</div>
-  </div>
-</div>
-
-<!-- ════ AI ASSISTANT ════ -->
-<button class="ai-fab" id="ai-fab" title="Donna — AI assistant">✦</button>
-<div class="ai-window" id="ai-window">
-  <div class="ai-win-head">
-    <div>
-      <div class="ai-win-title">Donna</div>
-      <div class="ai-win-sub">Navigation, controls, sync help</div>
-    </div>
-    <button class="icon-btn" id="ai-close" style="flex-shrink:0">×</button>
-  </div>
-  <div class="ai-chips">
-    <button class="ai-chip" onclick="askAI('How do I go home?')">Go home</button>
-    <button class="ai-chip" onclick="askAI('How to create a room?')">Create room</button>
-    <button class="ai-chip" onclick="askAI('Fix sync issues')">Fix sync</button>
-    <button class="ai-chip" onclick="askAI('How to join a room?')">Join room</button>
-  </div>
-  <div class="ai-msgs" id="ai-msgs">
-    <div class="ai-msg bot"><div class="ai-bub">Hi! I'm Donna. Ask me anything about navigation, room controls, or sync issues.</div></div>
-  </div>
-  <div class="ai-inp-row">
-    <input class="ai-inp" id="ai-inp" placeholder="Ask a question…" onkeydown="if(event.key==='Enter')sendAI()">
-    <button class="ai-send" onclick="sendAI()">→</button>
-  </div>
-</div>
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <span class="footer-accent">Amanjeeta Rath</span> — All rights reserved.</p>
+  <p>Built with <span class="footer-accent">♥</span> &amp; lots of <span class="footer-accent">comments</span></p>
+</footer>
 
 <script>
-// ── STATE ──
-let cp='land',prevPage='land',playing=false,muted=false;
-let dashOpen=false,schedOpen=false,setOpen=false,aiOpen=false,chatCollapsed=false;
-let prog=35,lm=false,progT,toastT,msgId=200;
-const VALID=['land','login','signup','room'];
-const ROOM_CODES=new Set(['482731','184205','590116']);
-let currentCode='482731';
-
-// ── HOME CHAT DATA ──
-const ROOMS=[
-  {id:'midnight-vault',label:'midnight-vault',sub:'Public · horror-night',online:4,msgs:[
-    {u:'Vesper',a:'V',c:'ava-r',role:'Host',t:'8:22 PM',txt:'The shadows gather... shall we begin? 🕯️'},
-    {u:'mortem',a:'M',c:'ava-p',role:'Co-host',t:'8:23 PM',txt:'Excellent choice tonight, genuinely haunting.'},
-    {u:'elara_d',a:'E',c:'ava-g',role:'Member',t:'8:24 PM',txt:'Never seen the restored version — this is stunning 😱'},
-    {u:'shadow_x',a:'S',c:'ava-b',role:'Member',t:'8:25 PM',txt:'The score is doing something to me.'}
-  ]},
-  {id:'watch-party-plans',label:'watch-party-plans',sub:'Private · planning',online:2,msgs:[
-    {u:'Aster',a:'A',c:'ava-p',role:'Friend',t:'7:45 PM',txt:'Can we do a Ghibli night after this?'},
-    {u:'Rune',a:'R',c:'ava-g',role:'Friend',t:'7:49 PM',txt:'Already queued Spirited Away 🍿'}
-  ]},
-  {id:'friend-lounge',label:'friend-lounge',sub:'Public · off-topic',online:3,msgs:[
-    {u:'Nova',a:'N',c:'ava-r',role:'Friend',t:'6:15 PM',txt:'Drop your best spooky emoji combo 👻'}
-  ]}
-];
-let activeRoomId='midnight-vault';
-
-// ROOM CHAT
-const ROOM_MSGS=[
-  {u:'Vesper',a:'V',c:'ava-r',role:'Host',t:'8:22 PM',txt:'The shadows gather... shall we begin? 🕯️'},
-  {u:'mortem',a:'M',c:'ava-p',role:'Co-host',t:'8:23 PM',txt:'Excellent choice.'},
-  {u:'elara_d',a:'E',c:'ava-g',role:'Member',t:'8:24 PM',txt:'Restored version looks incredible!'},
-  {u:'shadow_x',a:'S',c:'ava-b',role:'Member',t:'8:25 PM',txt:'Ready.'}
-];
-
-// AI ANSWERS
-const AI_KB=[
-  {r:/home|back|land/i,a:'Click the SyncStream logo or the Home button in the room bar to return to the homepage. You can also use the browser back button.'},
-  {r:/create.*room|make.*room/i,a:'From the homepage, click "+ Create a Room". SyncStream generates a 6-digit code instantly — share it with friends to join.'},
-  {r:/join.*room|enter.*code/i,a:'Click "↗ Join with Code" on the homepage, then type the 6-digit room code your friend shared with you.'},
-  {r:/sync|lag|out of sync/i,a:'If viewers drift out of sync, press the ⟳ button in the player controls. It snaps everyone to the host\'s timestamp.'},
-  {r:/chat/i,a:'Chat is available both on the homepage (Community Chat section) and inside any room — look for the chat panel on the right side.'},
-  {r:/schedule|plan/i,a:'Inside a room, tap the 🗓 icon in the top bar to open the schedule panel. Set date, film URL, and invite emails.'},
-  {r:/theme|dark|light/i,a:'Click the ☾ / ☀ icon in the navigation bar to switch between dark and light themes.'}
-];
-function getAIReply(q){
-  for(const {r,a} of AI_KB) if(r.test(q)) return a;
-  return "I can help with navigation, creating or joining rooms, sync, chat, and scheduling. Try one of the quick buttons above!";
-}
-
-// ── UTILS ──
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function toast(msg){
-  let t=document.querySelector('.toast');if(t)t.remove();
-  t=document.createElement('div');t.className='toast';t.textContent=msg;
-  document.body.appendChild(t);
-  clearTimeout(toastT);toastT=setTimeout(()=>{if(t)t.remove()},3000);
-}
-function now(){
-  const d=new Date(),h=((d.getHours()+11)%12)+1,m=String(d.getMinutes()).padStart(2,'0');
-  return `${h}:${m} ${d.getHours()>=12?'PM':'AM'}`;
-}
-
-// ── NAVIGATION ──
-function go(p,push=true){
-  if(!VALID.includes(p))return;
-  if(p!==cp)prevPage=cp;
-  if(push){const h='#'+p;if(location.hash!==h)history.pushState({p},null,h);}
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.getElementById('pg-'+p).classList.add('active');
-  document.getElementById('topnav').style.display=p==='room'?'none':'flex';
-  cp=p;
-  if(p==='land')renderHomeChat();
-  if(p==='room'){renderRoomChat();checkMobile();}
-  window.scrollTo(0,0);
-  // update nav tab active
-  document.querySelectorAll('.nav-tab[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===p));
-}
-window.addEventListener('popstate',()=>{
-  const p=(location.hash||'#land').replace('#','');
-  go(VALID.includes(p)?p:'land',false);
-});
-
-function scrollToRooms(){document.getElementById('sec-rooms')?.scrollIntoView({behavior:'smooth'})}
-function scrollToChat(){document.getElementById('sec-chat')?.scrollIntoView({behavior:'smooth'})}
-
-// ── THEME ──
-function toggleTheme(){
-  lm=!lm;
-  document.body.classList.toggle('light',lm);
-  document.querySelectorAll('#theme-btn').forEach(b=>b.textContent=lm?'☀':'☾');
-}
-
-// ── ROOM CREATE/JOIN ──
-function createRoom(){
-  let code;do{code=String(Math.floor(100000+Math.random()*900000))}while(ROOM_CODES.has(code));
-  ROOM_CODES.add(code);currentCode=code;
-  go('room');
-  document.querySelectorAll('.code-chip').forEach(c=>c.textContent='Code '+code);
-  toast('Room created! Code: '+code);
-}
-function openJoin(){document.getElementById('join-modal').classList.add('open');setTimeout(()=>document.getElementById('join-input').focus(),60)}
-function closeJoin(){document.getElementById('join-modal').classList.remove('open')}
-function submitJoin(){
-  const v=document.getElementById('join-input').value.trim();
-  if(!/^\d{6}$/.test(v)){toast('Enter a valid 6-digit code');return}
-  if(!ROOM_CODES.has(v)){toast('Room code not found');return}
-  currentCode=v;closeJoin();go('room');
-  document.querySelectorAll('.code-chip').forEach(c=>c.textContent='Code '+v);
-  toast('Joined room '+v+' ✓');
-}
-function copyCode(){navigator.clipboard?.writeText(currentCode).then(()=>toast('Code '+currentCode+' copied!')).catch(()=>toast('Code: '+currentCode))||toast('Code: '+currentCode)}
-
-// ── ROOM CONTROLS ──
-function toggleDash(){
-  dashOpen=!dashOpen;
-  document.getElementById('dash-panel').classList.toggle('open',dashOpen);
-}
-function toggleDashSec(el){
-  el.closest('.dash-section').classList.toggle('open');
-}
-function collapseChat(){
-  chatCollapsed=true;
-  const p=document.getElementById('chat-panel');
-  if(window.innerWidth<=560){p.classList.remove('mob-open');p.classList.add('collapsed')}
-  else p.classList.add('collapsed');
-}
-function toggleMobileChat(){
-  const p=document.getElementById('chat-panel');
-  chatCollapsed=!chatCollapsed;
-  if(window.innerWidth<=560){p.classList.toggle('mob-open',!chatCollapsed);p.classList.toggle('collapsed',chatCollapsed)}
-  else p.classList.toggle('collapsed',chatCollapsed);
-}
-function checkMobile(){
-  const btn=document.getElementById('mob-chat-btn');
-  if(btn)btn.style.display=window.innerWidth<=560?'flex':'none';
-}
-window.addEventListener('resize',checkMobile);
-
-function toggleSched(){schedOpen=!schedOpen;document.getElementById('sched-overlay').classList.toggle('open',schedOpen)}
-function toggleSet(){
-  setOpen=!setOpen;
-  document.getElementById('set-drop').classList.toggle('open',setOpen);
-  document.getElementById('set-btn')?.classList.toggle('on',setOpen);
-}
-
-// ── PLAYBACK ──
-function togglePlay(){
-  playing=!playing;
-  document.getElementById('vid-wrap').classList.toggle('playing',playing);
-  document.getElementById('play-ctrl').textContent=playing?'⏸':'▶';
-  document.getElementById('play-ctrl').classList.toggle('on',playing);
-  if(playing)startProg();else clearInterval(progT);
-}
-function startProg(){
-  clearInterval(progT);
-  progT=setInterval(()=>{
-    if(!playing){clearInterval(progT);return}
-    prog=Math.min(100,prog+0.045);
-    document.getElementById('prog-fill').style.width=prog+'%';
-    const s=Math.floor(5460*prog/100);
-    document.getElementById('time-lbl').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+' / 91:00';
-  },200);
-}
-function seekTo(e){const r=e.currentTarget.getBoundingClientRect();prog=Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100));document.getElementById('prog-fill').style.width=prog+'%'}
-function seekB(){prog=Math.max(0,prog-2);document.getElementById('prog-fill').style.width=prog+'%';toast('−10 s')}
-function seekF(){prog=Math.min(100,prog+2);document.getElementById('prog-fill').style.width=prog+'%';toast('+10 s')}
-function toggleMute(){muted=!muted;const b=document.getElementById('mute-ctrl');b.textContent=muted?'🔇':'🔊';b.classList.toggle('on',muted)}
-function syncAll(){toast('All viewers synced ✓')}
-function floatReact(em){
-  const f=document.getElementById('react-floats');
-  if(!f)return;
-  const d=document.createElement('div');d.className='float-em';d.textContent=em;
-  d.style.left=Math.random()*80+5+'%';f.appendChild(d);
-  setTimeout(()=>d.remove(),2200);
-  // also add to room chat
-  const inp=document.getElementById('room-chat-inp');if(inp){inp.value=em;sendRoomChat();}
-}
-
-// ── HOME CHAT ──
-function renderHomeChat(){
-  const list=document.getElementById('hchat-room-list');
-  if(!list)return;
-  list.innerHTML=ROOMS.map(r=>`
-    <div class="hchat-room-item${r.id===activeRoomId?' active':''}" onclick="setHomeRoom('${r.id}')"># ${esc(r.label)}</div>
-  `).join('');
-  const room=ROOMS.find(r=>r.id===activeRoomId)||ROOMS[0];
-  document.getElementById('hchat-title').textContent='# '+room.label;
-  document.getElementById('hchat-sub').textContent=room.sub;
-  document.getElementById('hchat-online').textContent=room.online+' online';
-  const feed=document.getElementById('hchat-feed');
-  if(!feed)return;
-  feed.innerHTML=room.msgs.map(m=>`
-    <div class="hchat-msg">
-      <div class="hchat-ava ${m.c}" style="background:var(--color)">${esc(m.a)}</div>
-      <div class="hchat-bubble">
-        <div class="hchat-meta">
-          <span class="hchat-user">${esc(m.u)}</span>
-          <span class="hchat-role">${esc(m.role)}</span>
-          <span class="hchat-time">${esc(m.t)}</span>
-        </div>
-        <div class="hchat-text">${esc(m.txt)}</div>
-      </div>
-    </div>
-  `).join('');
-  feed.scrollTop=feed.scrollHeight;
-}
-function setHomeRoom(id){
-  activeRoomId=id;
-  renderHomeChat();
-}
-let homeChatReplyTimer;
-function sendHomeChat(){
-  const inp=document.getElementById('hchat-inp');
-  const v=inp.value.trim();if(!v)return;
-  const room=ROOMS.find(r=>r.id===activeRoomId)||ROOMS[0];
-  room.msgs.push({u:'You',a:'Y',c:'ava-r',role:'You',t:now(),txt:v});
-  inp.value='';
-  renderHomeChat();
-  clearTimeout(homeChatReplyTimer);
-  homeChatReplyTimer=setTimeout(()=>{
-    const friends=room.msgs.filter(m=>m.u!=='You');
-    if(!friends.length)return;
-    const last=friends[friends.length-1];
-    room.msgs.push({u:last.u,a:last.a,c:last.c,role:last.role,t:now(),txt:'Nice one! This room is always lively.'});
-    renderHomeChat();
-  },1200);
-}
-
-// ── ROOM CHAT ──
-function renderRoomChat(){
-  const feed=document.getElementById('room-feed');
-  if(!feed)return;
-  feed.innerHTML=ROOM_MSGS.map(m=>`
-    <div class="cmsg">
-      <div class="cmsg-ava ${m.c}">${esc(m.a)}</div>
-      <div class="cmsg-bub">
-        <div class="cmsg-meta">
-          <span class="cmsg-name">${esc(m.u)}</span>
-          <span class="cmsg-role">${esc(m.role)}</span>
-          <span class="cmsg-time">${esc(m.t)}</span>
-        </div>
-        <div class="cmsg-text">${esc(m.txt)}</div>
-      </div>
-    </div>
-  `).join('');
-  feed.scrollTop=feed.scrollHeight;
-}
-let roomReplyTimer;
-function sendRoomChat(){
-  const inp=document.getElementById('room-chat-inp');
-  const v=inp.value.trim();if(!v)return;
-  ROOM_MSGS.push({u:'You',a:'Y',c:'ava-r',role:'You',t:now(),txt:v});
-  inp.value='';
-  renderRoomChat();
-  clearTimeout(roomReplyTimer);
-  roomReplyTimer=setTimeout(()=>{
-    ROOM_MSGS.push({u:'mortem',a:'M',c:'ava-p',role:'Co-host',t:now(),txt:'Agreed. This scene is everything.'});
-    renderRoomChat();
-  },1100);
-}
-
-// ── AI ──
-function toggleAI(){aiOpen=!aiOpen;document.getElementById('ai-window').classList.toggle('open',aiOpen);if(aiOpen)document.getElementById('ai-inp').focus()}
-function askAI(q){
-  if(!aiOpen)toggleAI();
-  addMsg('user',q);
-  setTimeout(()=>addMsg('bot',getAIReply(q)),300);
-}
-function sendAI(){
-  const inp=document.getElementById('ai-inp');
-  const v=inp.value.trim();if(!v)return;
-  inp.value='';askAI(v);
-}
-function addMsg(role,txt){
-  const wrap=document.getElementById('ai-msgs');
-  const row=document.createElement('div');row.className='ai-msg '+role;
-  const bub=document.createElement('div');bub.className='ai-bub';bub.textContent=txt;
-  row.appendChild(bub);wrap.appendChild(row);wrap.scrollTop=wrap.scrollHeight;
-}
-
-// ── AVA COLORS ──
-const AVA_COLORS={'ava-r':'#b04060','ava-p':'#7040a8','ava-g':'#2a7a50','ava-b':'#2858b0'};
-document.addEventListener('DOMContentLoaded',()=>{
-  document.querySelectorAll('.hchat-ava,.cmsg-ava').forEach(el=>{
-    for(const[cls,col] of Object.entries(AVA_COLORS)){
-      if(el.classList.contains(cls)){el.style.background=col;break}
-    }
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+  document.querySelectorAll('a, button, .btn, .pill, .project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2.5)'; ring.style.opacity = '0.8'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.opacity = '0.5'; });
   });
-});
 
-// ── CLOSE ON OUTSIDE CLICK ──
-document.addEventListener('click',e=>{
-  if(setOpen&&!e.target.closest('#set-drop')&&!e.target.closest('#set-btn')){
-    setOpen=false;document.getElementById('set-drop').classList.remove('open');
-    document.getElementById('set-btn')?.classList.remove('on');
-  }
-  if(!e.target.closest('#ai-window')&&!e.target.closest('#ai-fab')&&aiOpen){
-    aiOpen=false;document.getElementById('ai-window').classList.remove('open');
-  }
-});
-document.getElementById('ai-fab').onclick=toggleAI;
-document.getElementById('ai-close').onclick=()=>{aiOpen=false;document.getElementById('ai-window').classList.remove('open')};
-document.getElementById('join-input').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6)});
-document.getElementById('join-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitJoin()});
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => obs.observe(el));
 
-// ── INIT ──
-const initPage=(location.hash||'#land').replace('#','');
-history.replaceState({p:initPage},null,'#'+(VALID.includes(initPage)?initPage:'land'));
-go(VALID.includes(initPage)?initPage:'land',false);
+  // Stagger child reveals
+  document.querySelectorAll('.skills-grid, .projects-grid, .edu-grid, .about-stats').forEach(grid => {
+    [...grid.children].forEach((child, i) => {
+      child.classList.add('reveal');
+      child.style.transitionDelay = `${i * 0.08}s`;
+      obs.observe(child);
+    });
+  });
 </script>
 </body>
 </html>
